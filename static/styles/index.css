@@ -1,0 +1,125 @@
+:root {
+    --colorPrimary: #8739f9;
+    --colorSecondary: #37b9f1;
+    --colorGrey: #f2f5f5;
+    --colorText: #e1dfe9;
+    --colorLable: #908e98;
+    --colorDiabled: #565360;
+}
+
+body {
+    font-family: "Ubuntu";
+    background-color: rgb(37, 37, 37);
+    color: var(--colorText);
+}
+
+.login-box,
+.slot-game {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 20, 20, 0.987);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+.login-box .user-box,
+.slot-game .stake{
+    position: relative;
+}
+
+.login-box .user-box input,
+.slot-game .stake input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--colorText);
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid var(--colorText);
+    outline: none;
+    background: transparent;
+}
+
+.login-box .user-box label,
+.slot-game .stake label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--colorLable);
+    pointer-events: none;
+    transition: .5s;
+}
+
+.login-box .user-box input:focus~label,
+.login-box .user-box input:valid~label,
+.slot-game .stake input:focus~label,
+.slot-game .stake input:valid~label {
+    top: -20px;
+    left: 0;
+    color: var(--colorPrimary);
+    font-size: 12px;
+}
+
+.login-box a,
+.slot-game a{
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: var(--colorText);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px;
+}
+
+.login-box a:hover,
+.slot-game a:hover {
+    background: var(--colorPrimary);
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px var(--colorPrimary),
+                0 0 20px var(--colorPrimary),
+                0 0 10px var(--colorPrimary),
+                0 0 5px var(--colorPrimary);
+}
+
+.login-box a span,
+.slot-game a span{
+    position: absolute;
+    display: block;
+}
+
+@keyframes btn-anim1 {
+    0% {
+        left: -100%;
+    }
+    50%,100% {
+        left: 100%;
+    }
+}
+
+.login-box a span:nth-child(1),
+.slot-game a span:nth-child(1) {
+    bottom: 2;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--colorPrimary));
+    animation: btn-anim1 1s linear infinite;
+}
+
+p {
+    display: flex;
+    flex-direction: row;
+    color: #8739f9;
+}

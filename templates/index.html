@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slots</title>
+    <script src="{{ url_for('static',filename='index.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/index.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="slot-game">
+        <form id="game-form">
+            <div class="stake">
+                <input type="text" name="stake" id="stake" required>
+                <label for="stake">Stake</label>
+            </div><center>
+            <a id="play" onclick="playAndFocus()" type="submit">
+                SPIN
+                <span></span>
+            </a></center>
+        </form>
+        <script>
+            document.getElementById('game-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // This will prevent the form from submitting normally.
+                playAndFocus(); // Call function to handle your logic and refocus.
+            });
+            
+            function playAndFocus() {
+                var stakeValue = document.getElementById('stake').value;
+                play(stakeValue); // Assuming 'play' is your function to handle the spin.
+                document.getElementById('stake').focus(); // Refocus on the input element.
+            }
+        </script>
+        <p id="balance">Balance: </p>
+        <p id="symbols">Symbols: </p>
+        <p id="win_amount">You won: </p>
+        <button id="stats">View Statistics</button>
+    </div>
+</body>
+</html>
