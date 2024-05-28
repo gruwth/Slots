@@ -15,6 +15,7 @@ class Login(tk.Frame):
     def __init__(self, login_func, register_func, master=None):
         super().__init__(master)
         self.master = master
+        self.master.title("Login")
         self.configure(bg=D_PINK)
         self.load_custom_font()
         self.create_widgets()
@@ -127,13 +128,31 @@ class Login(tk.Frame):
     def login(self):
         username = self.get_username()
         password = self.get_password()
-        self.login_func(username, password)
+        res = self.login_func(username, password)
+        if res.status_code != 200:
+            msg = res.json().get("message")
+            self.master.create_popup(f"Login failed: Server responded with a status of {res.status_code}\nMessage: {msg}" , timeout=10)
+            return
+        elif res.status_code == 200:
+            self.master.create_popup(f"Login successful: {username}", timeout=3)
+            self.master.switch_to_game()
+        else:
+            self.master.create_popup(f"Login failed: An unknown error occurred", timeout=10)
     
     def register_(self):
         username = self.get_username()
         password = self.get_password()
         confirm_password = self.get_confirm_password()
-        self.register_func(username, password, confirm_password)
+        res = self.register_func(username, password, confirm_password)
+        if res.status_code != 200:
+            msg = res.json().get("message")
+            self.master.create_popup(f"Register failed: Server responded with a status of {res.status_code}\nMessage: {msg}" , timeout=10)
+            return
+        elif res.status_code == 200:
+            self.master.create_popup(f"Registered successfully: {username}", timeout=3)
+            self.master.switch_to_game()
+        else:
+            self.master.create_popup(f"Register failed: An unknown error occurred", timeout=10)
 
     def center_window(self):
         self.master.update_idletasks()
@@ -152,15 +171,51 @@ class Login(tk.Frame):
     def get_confirm_password(self):
         return self.confirm_password_entry_widget.get()
 
+class Game(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.master.title("Game")
+        self.configure(bg=WHITE)
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Add your code to create the game widgets here
+        pass
+
 class GUI(tk.Tk):
     def __init__(self, login_func, register_func):
         super().__init__()
-        self.title("Login Page")
+        self.title("")
         self.geometry("800x600")
         self.resizable(False, False)
         self.configure(bg=D_PINK)
         self.login_page = Login(login_func=login_func, register_func=register_func, master=self)
         self.login_page.pack(expand=True)
+        self.current_popup = None
+
+    def switch_to_game(self):
+        self.login_page.destroy()
+        self.game_page = Game(master=self)
+        self.game_page.pack(expand=True)
+
+    def create_popup(self, message, timeout=3):
+        if self.current_popup:
+            self.current_popup.destroy()
+        
+        popup_frame = tk.Frame(self, bg=D_PINK, bd=2) 
+        popup_frame.place(relx=0.5, rely=0, anchor=tk.N)
+
+        self.current_popup = popup_frame
+        
+        popup_label = tk.Label(popup_frame, text=message, bg=D_PINK, fg=BLACK, font=self.login_page.custom_font, bd=2, relief=tk.SOLID, padx=2, pady=2)
+        popup_label.pack(padx=10, pady=10)
+        
+        def close_popup():
+            popup_frame.destroy()
+            self.current_popup = None
+        
+        self.after(timeout*1000, close_popup)
 
 
     def run(self):
