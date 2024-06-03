@@ -13,13 +13,18 @@ class Client:
         res = requests.post(f"{self.base_url}/login", json={"user_id": username, "user_pw": password})
         return res
 
-
+    def get_leaderboard(self):
+        res = requests.get(f"{self.base_url}/leaderboard")
+        return res
+    
 if __name__ == "__main__":
-    # testing
-    import time
-    users = [["", ""], ["test", ""], ["", "test"], ["test", "test"], ["test123", "test123"], ["test", "test123"], ["test123", "test"], ["user1", "password1"], ["user2", "password2"], ["user3", "password3"]]
     client = Client()
-    for i in range(len(users)):
-        res = client.login(users[i][0], users[i][1])
-        print(res.status_code, res.json().get("message"))
+    lb = client.get_leaderboard()
+    users = lb.json()
+    sorted_users = sorted(users, key=lambda user: user['money'], reverse=True)
+    top_10_users = sorted_users[:10]
+    for user in top_10_users:
+        print(user)
+
+
 

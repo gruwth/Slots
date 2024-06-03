@@ -17,17 +17,13 @@ class Login(tk.Frame):
         self.master = master
         self.master.title("Login")
         self.configure(bg=D_PINK)
-        self.load_custom_font()
+        self.custom_font = self.master.custom_font
         self.create_widgets()
         self.center_window()
-        self.show_grid = False
         ### MUSS ZUERST GESETZT WERDEN ###
         self.login_func: function = login_func
         self.register_func: function = register_func
 
-
-    def load_custom_font(self):
-        self.custom_font = tkfont.Font(family='Ubuntu Sans Mono', size=12)
     
     def create_widgets(self):
         self.username_label = tk.Label(self, text="Username", bg=D_PINK, fg=BLACK, font=self.custom_font)
@@ -131,7 +127,7 @@ class Login(tk.Frame):
         res = self.login_func(username, password)
         if res.status_code != 200:
             msg = res.json().get("message")
-            self.master.create_popup(f"Login failed: Server responded with a status of {res.status_code}\nMessage: {msg}" , timeout=10)
+            self.master.create_popup(f"Login failed: {msg}" , timeout=10)
             return
         elif res.status_code == 200:
             self.master.create_popup(f"Login successful: {username}", timeout=3)
@@ -146,7 +142,7 @@ class Login(tk.Frame):
         res = self.register_func(username, password, confirm_password)
         if res.status_code != 200:
             msg = res.json().get("message")
-            self.master.create_popup(f"Register failed: Server responded with a status of {res.status_code}\nMessage: {msg}" , timeout=10)
+            self.master.create_popup(f"Register failed: {msg}" , timeout=10)
             return
         elif res.status_code == 200:
             self.master.create_popup(f"Registered successfully: {username}", timeout=3)
@@ -172,31 +168,47 @@ class Login(tk.Frame):
         return self.confirm_password_entry_widget.get()
 
 class Game(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, init_lb_func, master=None):
         super().__init__(master)
         self.master = master
+        self.master.current_screen = "game"
         self.master.title("Game")
-        self.configure(bg=WHITE)
+        self.configure(bg=D_PINK)
+        self.custom_font = self.master.custom_font
         self.create_widgets()
+        self.pack(fill=tk.BOTH, expand=True)
+        self.add_labels(init_lb_func())
 
     def create_widgets(self):
-        # Add your code to create the game widgets here
-        pass
+        leaderboard_label = tk.Label(self, text="Leaderboard", bg=D_PINK, fg=BLACK, font=self.custom_font)
+        leaderboard_label.pack(side=tk.TOP, anchor=tk.NW)
+
+    def add_labels(self, data):
+        for item in data:
+            label = tk.Label(self, text=f"{item.get('id')}: {item.get('money')}", bg=D_PINK, fg=BLACK, font=self.custom_font)
+            label.pack(side=tk.TOP, anchor=tk.W)
 
 class GUI(tk.Tk):
-    def __init__(self, login_func, register_func):
+    def __init__(self, login_func, register_func, init_lb_func):
         super().__init__()
         self.title("")
         self.geometry("800x600")
         self.resizable(False, False)
+        self.load_custom_font()
         self.configure(bg=D_PINK)
         self.login_page = Login(login_func=login_func, register_func=register_func, master=self)
         self.login_page.pack(expand=True)
         self.current_popup = None
+        self.current_screen = "login"
+        self.init_lb_func = init_lb_func
+
+
+    def load_custom_font(self):
+        self.custom_font = tkfont.Font(family='Ubuntu Sans Mono', size=12)
 
     def switch_to_game(self):
         self.login_page.destroy()
-        self.game_page = Game(master=self)
+        self.game_page = Game(self.init_lb_func, master=self)
         self.game_page.pack(expand=True)
 
     def create_popup(self, message, timeout=3):
