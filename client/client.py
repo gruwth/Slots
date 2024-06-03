@@ -16,6 +16,10 @@ class Client:
     def get_leaderboard(self):
         res = requests.get(f"{self.base_url}/leaderboard")
         return res
+
+    def play(self, username, stake):
+        res = requests.post(f"{self.base_url}/play", json={"user_id": username, "stake": stake})
+        return res
     
 if __name__ == "__main__":
     client = Client()
