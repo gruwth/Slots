@@ -365,4 +365,3 @@ class GUI(tk.Tk):
     def run(self):
         self.mainloop()
 
-

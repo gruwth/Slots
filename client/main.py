@@ -12,12 +12,3 @@ if __name__ == "__main__":
 
     interface = GUI(client.login, client.register, client.get_sorted_lb, client.play, client.get_balance)
     interface.run()
-
-
-
-
-
-
-
-
-
