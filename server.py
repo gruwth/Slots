@@ -24,14 +24,14 @@ class Symbol:
         return self.name
 
 symbols = [
-    Symbol('a', 1),
+    Symbol('a', 1),  # Define symbols and their values
     Symbol('b', 2),
     Symbol('c', 3),
     Symbol('d', 4),
     Symbol('e', 5)
 ]
 
-symbol_weights = [50, 30, 20, 10, 5]
+symbol_weights = [50, 30, 20, 10, 5]  # Define weights for each symbol
 
 @app.route('/')
 def home():
@@ -61,27 +61,27 @@ def play_game():
     user['highest_stake'] = max(user['highest_stake'], stake)
 
     user['money'] -= stake
-    slots = random.choices(symbols, weights=symbol_weights, k=5)
+    slots = random.choices(symbols, weights=symbol_weights, k=5)  # Randomly select symbols
     slots_names = [slots.name for slots in slots]
     slots_output = ' '.join(slot.name for slot in slots)
 
-    symbol_values = {slot.name: slot.value for slot in symbols}
+    symbol_values = {slot.name: slot.value for slot in symbols}  # Create a dictionary of symbol values
     win_amount = 0
     message = 'You lost'
 
-    counts = {slot.name: slots.count(slot) for slot in slots}
-    common_symbol, common_count = max(counts.items(), key=lambda item: item[1])
+    counts = {slot.name: slots.count(slot) for slot in slots}  # Count the occurrences of each symbol
+    common_symbol, common_count = max(counts.items(), key=lambda item: item[1])  # Find the most common symbol
 
     if common_count == 5:
-        win_amount = stake * symbol_values[common_symbol] * 10
+        win_amount = stake * symbol_values[common_symbol] * 10  # Calculate win amount for 5 matching symbols
         user['all_time_5_wins'] += 1
         message = f'Congratulations! You won: {win_amount}'
     elif common_count == 4:
-        win_amount = stake * symbol_values[common_symbol] * 1.5
+        win_amount = stake * symbol_values[common_symbol] * 1.5  # Calculate win amount for 4 matching symbols
         user['all_time_4_wins'] += 1
         message = f'You matched four symbols! You won: {win_amount}'
     elif common_count == 3:
-        win_amount = stake * symbol_values[common_symbol] * 1
+        win_amount = stake * symbol_values[common_symbol] * 1  # Calculate win amount for 3 matching symbols
         user['all_time_3_wins'] += 1
         message = f'You matched three symbols! You won: {win_amount}'
 
@@ -89,7 +89,6 @@ def play_game():
     user['all_money_won'] += win_amount
     user['highest_win'] = max(user['highest_win'], win_amount)
 
-    # Save updated user data
     save_user_data(users)
     
     return jsonify({
@@ -162,6 +161,14 @@ def check_balance(user_id):
     if not user:
         return jsonify({"message": "User not found."}), 404
     return jsonify({"balance": user['money']})
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    users = load_user_data()
+    users = sorted(users, key=lambda u: u['money'], reverse=True)
+    leaderboard = [{"id": u['id'], "money": u['money']} for u in users]
+    print(leaderboard)
+    return jsonify(leaderboard)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=9000)

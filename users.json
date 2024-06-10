@@ -1,7 +1,7 @@
 [
     {
-        "id": "gruwth",
-        "pw": "3u2c7du9AM",
+        "id": "test1",
+        "pw": "test1",
         "money": 701550.0,
         "times_played": 891,
         "highest_stake": 10000,
@@ -12,8 +12,8 @@
         "all_money_won": 542110.0
     },
     {
-        "id": "test",
-        "pw": "test",
+        "id": "test2",
+        "pw": "test2",
         "money": 1000,
         "times_played": 0,
         "highest_stake": 0,
@@ -24,27 +24,15 @@
         "all_money_won": 0
     },
     {
-        "id": "Krxzy",
-        "pw": "Mika_der_kek",
-        "money": 9500.0,
-        "times_played": 1040,
-        "highest_stake": 10000000000,
-        "highest_win": 10000000000,
-        "all_time_3_wins": 411,
-        "all_time_4_wins": 122,
-        "all_time_5_wins": 10,
-        "all_money_won": 51868128360.0
-    },
-    {
-        "id": "test123",
-        "pw": "test123",
-        "money": 2149900.0,
-        "times_played": 252,
-        "highest_stake": 920,
-        "highest_win": 1000,
-        "all_time_3_wins": 105,
-        "all_time_4_wins": 23,
-        "all_time_5_wins": 4,
-        "all_money_won": 22450.0
+        "id": "test",
+        "pw": "",
+        "money": 960,
+        "times_played": 4,
+        "highest_stake": 20,
+        "highest_win": 20,
+        "all_time_3_wins": 2,
+        "all_time_4_wins": 0,
+        "all_time_5_wins": 0,
+        "all_money_won": 40
     }
 ]
