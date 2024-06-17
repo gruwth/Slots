@@ -26,9 +26,6 @@ Diese Webanwendung ermöglicht es Benutzern, sich zu registrieren, anzumelden un
 - **Tkinter:** Ein Standard-GUI-Toolkit für Python, das für die Entwicklung der Frontend-Oberfläche verwendet wird.
 - **Requests:** Eine Bibliothek zur Handhabung von HTTP-Anfragen, um mit dem Backend zu kommunizieren.
 
-## Installation und Ausführung
-
-### [Siehe client Readme](https://github.com/gruwth/Slots/tree/main/client)
 
 # Softwarearchitektur 
 ```mermaid
